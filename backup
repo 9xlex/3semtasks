@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <wait.h>
+
+
+int main(int argc, char* argv[], char* envp[])
+{
+	int pid;
+    char tmp[100];
+    strcat(tmp, argv[2]);
+    strcat(tmp, "/");
+    strcat(tmp, argv[1]);
+    pid = fork();
+    if (pid == 0)
+    {
+        execle("/bin/mkdir", "/bin/mkdir", argv[2], tmp, NULL, envp);
+    }
+    while(wait(NULL) > 0);
+    pid = fork();
+    if (pid == 0)
+    {
+        execle("/bin/gzip", "/bin/gzip", "-r", argv[1], NULL, envp);
+    }
+    while(wait(NULL) > 0);
+    pid = fork();
+    if (pid == 0)
+    {
+        execle("/bin/cp", "/bin/cp", "-ru", argv[1], argv[2], NULL, envp);
+    }
+    while(wait(NULL) > 0);
+    pid = fork();  
+    if (pid == 0)
+    {
+        execle("/bin/gunzip", "/bin/gunzip", "-r", argv[1], NULL, envp);
+    }
+return 0;
+}

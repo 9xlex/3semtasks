@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <errno.h>
+#include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <string.h>
+
+int main()
+{
+
+FILE* fi; //тип данных
+int time[15];  //массив времен
+char name[50][15]; //массив имен
+//----------------------------------------------
+fi = fopen("text.txt", "r"); 
+int i = 0;
+while(fscanf(fi, "%d %s\n", &time[i], name[i]) == 2)
+{
+	i++;
+}
+close(fi);
+//--------------------------------------------------------------
+
+for (int k = 0; k < i; k++)
+{
+	int pid;
+	pid = fork();
+	if(pid == 0)
+	{
+		sleep(time[k]);
+		char path[100];
+		strcat(path,"/home/alexey/");
+		strcat( path, name[k]);
+		execlp(path,name[k], NULL);
+	}
+}
+
+return 0;
+}

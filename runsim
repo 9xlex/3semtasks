@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+
+int main(int argc, char* argv[], char* envp[])
+{
+	int N;
+	if(argv[1] == NULL)
+	{
+		printf("Неверный параметр командной строки\n");
+		exit(-1);
+	}
+	N = atoi(argv[1]);
+	int i = 0;
+	int star = 1;
+	int pid;
+
+	char app[100];
+	char tmp[100];
+
+	scanf("%s", app);
+	strcpy(tmp, "/bin/");
+	star = strcmp(app, "*");
+	strcat(tmp, app);
+	while(star != 0)
+	{
+		pid = fork();
+    	if (pid == 0)
+    	if(execle(tmp, tmp, NULL, envp) < 0)
+        {
+                perror("Ошибка в Запуске Приложения");
+                exit(-1);
+        }
+        M:
+		scanf("%s", app);
+		strcpy(tmp, "/bin/");
+		strcat(tmp, app);
+		star = strcmp(app, "*");
+		i++;
+		if(i == N && star != 0)
+		{
+			printf("Запущено максимально допустимое количество приложений\nВведите звездочку для остановки: ");
+			goto M;
+		}
+	}
+
+	return 0;
+}

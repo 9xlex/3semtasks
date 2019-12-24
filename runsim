@@ -32,7 +32,6 @@ int main(int argc, char* argv[], char* envp[])
                 perror("Ошибка в Запуске Приложения");
                 exit(-1);
         }
-        M:
 		scanf("%s", app);
 		strcpy(tmp, "/bin/");
 		strcat(tmp, app);
@@ -41,7 +40,8 @@ int main(int argc, char* argv[], char* envp[])
 		if(i == N && star != 0)
 		{
 			printf("Запущено максимально допустимое количество приложений\nВведите звездочку для остановки: ");
-			goto M;
+			scanf("%s", app);
+			exit(0);
 		}
 	}
 
